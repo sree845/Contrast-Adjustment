@@ -2,6 +2,7 @@
 #include <sycl/sycl.hpp>
 #include <iostream>
 #include <algorithm>
+#include <chrono>
 
 using namespace cv;
 using namespace sycl;
@@ -21,6 +22,8 @@ void adjustContrastAndBrightness(cv::Mat& image, float contrastFactor, float bri
 }
 
 int main() {
+    auto start_time = std::chrono::high_resolution_clock::now();
+
     std::cout << "Attempting to load image from: C:/Users/sree3/Downloads/input_image.jpg" << std::endl;
     cv::Mat image = cv::imread("C:/Users/sree3/Downloads/input_image.jpg", cv::IMREAD_GRAYSCALE);
     if (image.empty()) {
@@ -37,6 +40,11 @@ int main() {
         return -1;
     }
 
+    auto end_time = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> execution_time = end_time - start_time;
+
     std::cout << "Contrast and brightness adjustment completed and saved as output_image.jpg" << std::endl;
+    std::cout << "Execution time: " << execution_time.count() << " seconds" << std::endl;
+
     return 0;
 }
